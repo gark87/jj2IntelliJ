@@ -61,4 +61,10 @@ public class ROneOrMore extends RegularExpression {
         this.setColumn(t.beginColumn);
         this.regexpr = re;
     }
+
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("(");
+    regexpr.toFlex(ostr);
+    ostr.print(")+");
+  }
 }

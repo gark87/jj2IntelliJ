@@ -53,4 +53,10 @@ public class RZeroOrOne extends RegularExpression {
      return retVal;
   }
 
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("(");
+    regexpr.toFlex(ostr);
+    ostr.print(")?");
+  }
+
 }

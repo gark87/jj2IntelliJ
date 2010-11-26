@@ -37,4 +37,8 @@ public class REndOfFile extends RegularExpression {
   {
      return null;
   }
+
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("<EOF>");
+  }
 }

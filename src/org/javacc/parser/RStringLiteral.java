@@ -1350,4 +1350,14 @@ public class RStringLiteral extends RegularExpression {
   public String toString() {
     return super.toString() + " - " + image;
   }
+
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("\"");
+    int len = image.length();
+    for(int i = 0; i < len; i++) {
+      char c = image.charAt(i);
+      toHex(ostr, c);
+    }
+    ostr.print("\"");
+  }
 }

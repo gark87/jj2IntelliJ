@@ -71,4 +71,9 @@ public class RRepetitionRange extends RegularExpression {
      seq = new RSequence(units);
      return seq.GenerateNfa(ignoreCase);
   }
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("(");
+    regexpr.toFlex(ostr);
+    ostr.print(")+");
+  }
 }

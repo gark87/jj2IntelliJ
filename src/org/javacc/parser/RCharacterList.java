@@ -619,4 +619,33 @@ static final char[] diffUpperCaseRanges = {
     // Return true only if it is ~[]
     return negated_list && (descriptors == null || descriptors.size() == 0);
   }
+
+  public void toFlex(java.io.PrintWriter ostr)
+  {
+    if (negated_list && descriptors.isEmpty()) {
+      ostr.print(".");
+      return;
+    }
+    ostr.print("[");
+    if (negated_list)
+      ostr.print("^");
+    for (int i = 0; i < descriptors.size(); i++)
+    {
+      if (descriptors.get(i) instanceof SingleCharacter)
+      {
+        char c = ((SingleCharacter)descriptors.get(i)).ch;
+        toHex(ostr, c);
+      }
+      else
+      {
+        char l = ((CharacterRange)descriptors.get(i)).getLeft();
+        char r = ((CharacterRange)descriptors.get(i)).getRight();
+
+        toHex(ostr, l);
+        ostr.print("-");
+        toHex(ostr, r);
+      }
+    }
+    ostr.print("]");
+  }
 }

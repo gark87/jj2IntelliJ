@@ -78,6 +78,8 @@ public abstract class RegularExpression extends Expansion {
 
   public abstract Nfa GenerateNfa(boolean ignoreCase);
 
+  public abstract void toFlex(java.io.PrintWriter ostr);
+
   public boolean CanMatchAnyChar()
   {
      return false;
@@ -98,5 +100,17 @@ public abstract class RegularExpression extends Expansion {
     alreadyDumped.add(this);
     sb.append(' ').append(label);
     return sb;
+  }
+
+  protected static void toHex(java.io.PrintWriter ostr, char c) {
+     if (Character.isLetterOrDigit(c)) {
+       ostr.print(c);
+       return;
+     }
+     String hexVal = Integer.toHexString((int)c);
+
+     while (hexVal.length() <= 3)
+       hexVal = "0" + hexVal;
+     ostr.print("\\u" + hexVal);
   }
 }

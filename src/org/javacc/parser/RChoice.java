@@ -164,4 +164,18 @@ public class RChoice extends RegularExpression {
      }
   }
 
+  public void toFlex(java.io.PrintWriter ostr)
+  {
+    ostr.print("(");
+    for (int i = 0; i < getChoices().size(); i++)
+    {
+      RegularExpression curRE = (RegularExpression)getChoices().get(i);
+      ostr.print("(");
+      curRE.toFlex(ostr);
+      ostr.print(")");
+      if (i != getChoices().size() - 1)
+        ostr.print("|");
+    }
+    ostr.print(")");
+  }
 }

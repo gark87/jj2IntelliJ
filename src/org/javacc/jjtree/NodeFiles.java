@@ -52,51 +52,7 @@ final class NodeFiles {
 
   static Set nodesGenerated = new HashSet();
 
-  static void ensure(IO io, String nodeType)
-  {
-    File file = new File(JJTreeOptions.getJJTreeOutputDirectory(), nodeType + ".java");
-
-    if (nodeType.equals("Node")) {
-    } else if (nodeType.equals("SimpleNode")) {
-      ensure(io, "Node");
-    } else {
-      ensure(io, "SimpleNode");
-    }
-
-    /* Only build the node file if we're dealing with Node.java, or
-       the NODE_BUILD_FILES option is set. */
-    if (!(nodeType.equals("Node") || JJTreeOptions.getBuildNodeFiles())) {
-      return;
-    }
-
-    if (file.exists() && nodesGenerated.contains(file.getName())) {
-      return;
-    }
-
-    try {
-      String[] options = new String[] {"MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", "SUPPORT_CLASS_VISIBILITY_PUBLIC"};
-      OutputFile outputFile = new OutputFile(file, nodeVersion, options);
-      outputFile.setToolName("JJTree");
-
-      nodesGenerated.add(file.getName());
-
-      if (!outputFile.needToWrite) {
-        return;
-      }
-
-      if (nodeType.equals("Node")) {
-        generateNode_java(outputFile);
-      } else if (nodeType.equals("SimpleNode")) {
-        generateSimpleNode_java(outputFile);
-      } else {
-        generateMULTINode_java(outputFile, nodeType);
-      }
-
-      outputFile.close();
-
-    } catch (IOException e) {
-      throw new Error(e.toString());
-    }
+  static void ensure(IO io, String nodeType) {
   }
 
 
@@ -114,7 +70,7 @@ final class NodeFiles {
         ostr.println("import " + JJTreeGlobals.packageName + ".*;");
         ostr.println();
       }
-
+      ostr.println("import com.intellij.psi.tree.IElementType;");
     }
   }
 
@@ -142,18 +98,11 @@ final class NodeFiles {
 
       for (int i = 0; i < nodeIds.size(); ++i) {
         String n = (String)nodeIds.get(i);
-        ostr.println("  public int " + n + " = " + i + ";");
+        ostr.println("  public IElementType " + n + " = new "+JJTreeGlobals.parserName+"ElementType(\""+(String)nodeNames.get(i) + "\");");
       }
 
       ostr.println();
       ostr.println();
-
-      ostr.println("  public String[] jjtNodeName = {");
-      for (int i = 0; i < nodeNames.size(); ++i) {
-        String n = (String)nodeNames.get(i);
-        ostr.println("    \"" + n + "\",");
-      }
-      ostr.println("  };");
 
       ostr.println("}");
       ostr.close();

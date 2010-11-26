@@ -221,7 +221,7 @@ public class JavaCCGlobals {
 
      for (i = 0; i < toolNames.size() - 1; i++)
         toolNamePrefix += (String)toolNames.get(i) + "&";
-     toolNamePrefix += (String)toolNames.get(i) + ":";
+     toolNamePrefix += (String)toolNames.get(i) + "(jj2IntelliJ output version):";
 
      if (toolNamePrefix.length() > 200)
      {

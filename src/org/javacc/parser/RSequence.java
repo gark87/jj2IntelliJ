@@ -83,4 +83,9 @@ public class RSequence extends RegularExpression {
      ordinal = Integer.MAX_VALUE;
      units = seq;
   }
+
+  public void toFlex(java.io.PrintWriter ostr) {
+     for (int i = 0; i < units.size(); i++)
+        ((RegularExpression)units.get(i)).toFlex(ostr);
+  }
 }

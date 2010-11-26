@@ -52,8 +52,6 @@ final class JJTreeState
     }
 
     io.println();
-    io.println("  protected " + s + nameState() +
-         " jjtree = new " + nameState() + "();");
     io.println();
   }
 
@@ -65,17 +63,6 @@ final class JJTreeState
 
   static void generateTreeState_java()
   {
-    File file = new File(JJTreeOptions.getJJTreeOutputDirectory(), nameState() + ".java");
-
-    try {
-      OutputFile outputFile = new OutputFile(file);
-      PrintWriter ostr = outputFile.getPrintWriter();
-      NodeFiles.generatePrologue(ostr);
-      insertState(ostr);
-      outputFile.close();
-    } catch (IOException e) {
-      throw new Error(e.toString());
-    }
   }
 
 

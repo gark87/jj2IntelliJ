@@ -54,4 +54,9 @@ public class RJustName extends RegularExpression {
         this.label = image;
     }
 
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("{");
+    ostr.print(label);
+    ostr.print("}");
+  }
 }

@@ -153,15 +153,7 @@ public class ASTNodeDescriptor extends JJTreeNode {
 
   String closeNode(String nodeVar)
   {
-    if (expression == null) {
-      return "jjtree.closeNodeScope(" + nodeVar + ", true);";
-    } else if (isGT) {
-      return "jjtree.closeNodeScope(" + nodeVar + ", jjtree.nodeArity() >" +
-          expression_text() + ");";
-    } else {
-      return "jjtree.closeNodeScope(" + nodeVar + ", " +
-          expression_text() + ");";
-    }
+      return "{"+ nodeVar + ".done(" + getNodeId() + "); }";
   }
 
 

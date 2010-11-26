@@ -63,4 +63,10 @@ public class RZeroOrMore extends RegularExpression {
         this.regexpr = r;
     }
 
+  public void toFlex(java.io.PrintWriter ostr) {
+    ostr.print("(");
+    regexpr.toFlex(ostr);
+    ostr.print(")*");
+  }
+
 }
