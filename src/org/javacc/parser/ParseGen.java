@@ -112,48 +112,24 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
       ostr.println("    this.builder = builder;");
       ostr.println("  }");
 
-      if (!Options.getCacheTokens()) {
-        ostr.println("  " + staticOpt() + "private int jj_ntk;");
-      }
       if (jj2index != 0) {
-        ostr.println("  " + staticOpt() + "private PsiBuilder.Marker jj_scanpos, jj_lastpos;");
         ostr.println("  " + staticOpt() + "private int jj_la;");
+        ostr.println("  " + staticOpt() + "private int jj_offset;");
         if (lookaheadNeeded) {
           ostr.println("  /** Whether we are looking ahead. */");
           ostr.println("  " + staticOpt() + "private boolean jj_lookingAhead = false;");
           ostr.println("  " + staticOpt() + "private boolean jj_semLA;");
         }
       }
-      if (Options.getErrorReporting()) {
-        ostr.println("  " + staticOpt() + "private int jj_gen;");
-        ostr.println("  " + staticOpt() + "final private int[] jj_la1 = new int[" + maskindex + "];");
-        int tokenMaskSize = (tokenCount-1)/32 + 1;
-        for (int i = 0; i < tokenMaskSize; i++)
-          ostr.println("  static private int[] jj_la1_" + i + ";");
-        ostr.println("  static {");
-        for (int i = 0; i < tokenMaskSize; i++)
-          ostr.println("      jj_la1_init_" + i + "();");
-        ostr.println("   }");
-        for (int i = 0; i < tokenMaskSize; i++) {
-          ostr.println("   private static void jj_la1_init_" + i + "() {");
-          ostr.print("      jj_la1_" + i + " = new int[] {");
-          for (Iterator it = maskVals.iterator(); it.hasNext();) {
-            int[] tokenMask = (int[])(it.next());
-            ostr.print("0x" + Integer.toHexString(tokenMask[i]) + ",");
-          }
-          ostr.println("};");
-          ostr.println("   }");
-        }
-      }
       ostr.println("");
 
       ostr.println("  " + staticOpt() + "private IElementType jj_consume_token(IElementType type) {");
-      ostr.println("IElementType actualType = builder.getTokenType();");
-      ostr.println("if (actualType == type)");
-      ostr.println("builder.advanceLexer();");
-      ostr.println("else");
-      ostr.println("builder.error(\"Expected \" + type + \", but get: \" + actualType);");
-      ostr.println("return type;");
+      ostr.println("    IElementType actualType = builder.getTokenType();");
+      ostr.println("    if (actualType == type)");
+      ostr.println("      builder.advanceLexer();");
+      ostr.println("    else");
+      ostr.println("      builder.error(\"Expected \" + type + \", but get: \" + actualType);");
+      ostr.println("    return type;");
 
       ostr.println("  }");
       ostr.println("");
@@ -162,15 +138,15 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
         ostr.println("  " + staticOpt() + "final private LookaheadSuccess jj_ls = new LookaheadSuccess();");
         ostr.println("  " + staticOpt() + "private boolean jj_scan_token(IElementType kind) {");
         ostr.println("    IElementType nextType = builder.getTokenType();");
-        ostr.println("    if (jj_scanpos == jj_lastpos) {");
-        ostr.println("      jj_la--;");
-        ostr.println("        jj_lastpos = jj_scanpos = builder.mark();");
-        ostr.println("    } else {");
-        ostr.println("      jj_scanpos = builder.mark();");
-        ostr.println("    }");
+        ostr.println("    int prevOffset = builder.getCurrentOffset();");
         ostr.println("    builder.advanceLexer();");
+        ostr.println("    if (jj_offset == prevOffset) {");
+        ostr.println("      jj_la--;");
+        ostr.println("      jj_offset = builder.getCurrentOffset();");
+        ostr.println("    }");
         ostr.println("    if (nextType != kind) return true;");
-        ostr.println("    if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;");
+        ostr.println("    if (jj_la == 0 && builder.getCurrentOffset() == jj_offset)");
+        ostr.println("       throw jj_ls;");
         ostr.println("    return false;");
         ostr.println("  }");
         ostr.println("");
@@ -198,7 +174,7 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
       ostr.println("/** Get the specific Token. */");
       ostr.println("  " + staticOpt() + "final public IElementType getTokenType(int index) {");
       if (lookaheadNeeded) {
-        ostr.println("    Token t = jj_lookingAhead ? jj_scanpos : token;");
+//        ostr.println("    Token t = jj_lookingAhead ? jj_scanpos : token;");
       } else {
         ostr.println("    IElementType t = null;");
       }
