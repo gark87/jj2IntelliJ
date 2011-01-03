@@ -111,7 +111,7 @@ public class LexGen extends JavaCCGlobals implements JavaCCParserConstants
       ostr.println(" *");
       ostr.println(" *   # git clone git://git.jetbrains.org/idea/community.git $IDEADIR");
       ostr.println(" *   # $IDEADIR/tools/lexer/jflex-1.4/bin/jflex --skel $IDEADIR/tools/lexer/idea-flex.skeleton \\");
-      ostr.print(" *        --charat -d . _");
+      ostr.print(" *        --charat --jlex -d . _");
       ostr.print(tokMgrClassName);
       ostr.println(".flex");
       ostr.println(" *");
