@@ -157,6 +157,7 @@ public class LexGen extends JavaCCGlobals implements JavaCCParserConstants
           break;
       }
 
+      ostr.println("import com.intellij.lexer.FlexLexer;");
       ostr.println("");
       ostr.println("%%");
       ostr.println("");
