@@ -614,8 +614,7 @@ public class ParseEngine extends JavaCCGlobals {
       actions[e_nrw.getChoices().size()] = "\n" + 
         "builder.error(\"Unexpected type \" + builder.getTokenType());\n" + 
         "builder.advanceLexer();\n" + 
-        "jjtn000.drop();\n" +
-        "throw new IllegalStateException(\"Unexpected token\"+builder.getTokenType()+\"(\"+builder.getTokenText()+\")\");" ;
+        "continue;";
       // In previous line, the "throw" never throws an exception since the
       // evaluation of jj_consume_token(-1) causes ParseException to be
       // thrown first.
@@ -625,7 +624,9 @@ public class ParseEngine extends JavaCCGlobals {
         actions[i] = phase1ExpansionGen(nestedSeq);
         conds[i] = (Lookahead)(nestedSeq.units.get(0));
       }
-      retval = buildLookaheadChecker(conds, actions);
+      retval = "\ndo {";
+      retval += buildLookaheadChecker(conds, actions);
+      retval += "\nbreak;\n} while(true);\n";
     } else if (e instanceof Sequence) {
       Sequence e_nrw = (Sequence)e;
       // We skip the first element in the following iteration since it is the
