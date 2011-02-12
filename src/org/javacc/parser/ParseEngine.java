@@ -342,6 +342,12 @@ public class ParseEngine extends JavaCCGlobals {
                 tokenMask[j1] |= 1 << j2;
                 String s = (String)(names_of_tokens.get(new Integer(i)));
                 if (s == null) {
+		  RStringLiteral re = (RStringLiteral)
+		        rexps_of_tokens.get(new Integer(i));
+		  System.err.println("ERROR: jj2IntelliJ do NOT support unnamed " +
+		       "token types(literal constants)");
+		  System.err.println("ERROR: So, create named token with such " +
+		       "image:`" + re.image + "'");
                   retval += i;
                 } else {
                   retval += s;
