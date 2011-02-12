@@ -387,7 +387,8 @@ public class Options {
    * @return The requested static value.
    */
   public static boolean getStatic() {
-    return booleanValue("STATIC");
+    // gark87: we use builder everywhere, so these methods cannot be static
+    return false; //booleanValue("STATIC");
   }
 
   /**
