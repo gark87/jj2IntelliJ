@@ -424,7 +424,8 @@ public class Options {
    * @return The requested error reporting value.
    */
   public static boolean getErrorReporting() {
-    return booleanValue("ERROR_REPORTING");
+    // gark87: no need of extra code for error reporting  
+    return false;//booleanValue("ERROR_REPORTING");
   }
 
   /**
