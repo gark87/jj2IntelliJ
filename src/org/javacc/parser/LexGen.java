@@ -170,9 +170,11 @@ public class LexGen extends JavaCCGlobals implements JavaCCParserConstants
       ostr.println("}");
       ostr.println("public IElementType advance() throws java.io.IOException {");
       ostr.println("  IElementType result = internalAdvance();");
-      ostr.print("  while(result != null && result == ");
+      ostr.print("  while(result != null && (result == ");
       ostr.print(cu_name);
-      ostr.println("Constants.MORE)");
+      ostr.println("Constants.MORE || result == ");
+      ostr.print(cu_name);
+      ostr.println("Constants.SKIP))");
       ostr.println("    result = internalAdvance();");
       ostr.println("  return result;");
       ostr.println("}");

@@ -118,6 +118,8 @@ public class OtherFilesGen extends JavaCCGlobals implements JavaCCParserConstant
     ostr.println("");
     ostr.println(" /* MORE */");
     ostr.println(" IElementType MORE = new "+cu_name+"ElementType(\"|MORE|\");");
+    ostr.println(" /* SKIP */");
+    ostr.println(" IElementType SKIP = new "+cu_name+"ElementType(\"|SKIP|\");");
     RegularExpression re;
     for (java.util.Iterator it = ordered_named_tokens.iterator(); it.hasNext();) {
       re = (RegularExpression)it.next();
