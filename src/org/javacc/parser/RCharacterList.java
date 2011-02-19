@@ -623,7 +623,7 @@ static final char[] diffUpperCaseRanges = {
   public void toFlex(java.io.PrintWriter ostr)
   {
     if (negated_list && descriptors.isEmpty()) {
-      ostr.print(".");
+      ostr.print("(.|\\n)");
       return;
     }
     ostr.print("[");
