@@ -606,13 +606,16 @@ public class LexGen extends JavaCCGlobals implements JavaCCParserConstants
         boolean ignore = tp.ignoreCase;
         List rexps = tp.respecs;
 
-        for (j = 0; j < rexps.size(); j++)
+        for(int ii = 0; ii < tp.lexStates.length; ii++)
         {
-          RegExprSpec respec = (RegExprSpec)rexps.get(j);
-          RegularExpression re = respec.rexp;
-          if (re.private_rexp)
-             continue;
-          for(int ii=0; ii< tp.lexStates.length; ii++) {
+          if (!key.equals(tp.lexStates[ii]))
+            continue;
+          for (j = 0; j < rexps.size(); j++)
+          {
+            RegExprSpec respec = (RegExprSpec)rexps.get(j);
+            RegularExpression re = respec.rexp;
+            if (re.private_rexp)
+              continue;
             ostr.print("<");
             if (tp.lexStates[ii].equals("DEFAULT"))
               ostr.print("YYINITIAL");
