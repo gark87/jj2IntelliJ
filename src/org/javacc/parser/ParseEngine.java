@@ -761,8 +761,9 @@ public class ParseEngine extends JavaCCGlobals {
     ostr.println("    jj_la = xla;");
     ostr.println("    jj_offset = builder.getCurrentOffset();");
     ostr.println("    PsiBuilder.Marker jj_scanpos = builder.mark();");
-    ostr.println("    try { boolean result =  !jj_3" + e.internal_name + "(); jj_scanpos.rollbackTo(); return result;}");
+    ostr.println("    try { boolean result =  !jj_3" + e.internal_name + "(); return result;}");
     ostr.println("    catch(LookaheadSuccess ls) { return true; }");
+    ostr.println("    finally { jj_scanpos.rollbackTo(); }");
     ostr.println("  }");
     ostr.println("");
     Phase3Data p3d = new Phase3Data(e, la.getAmount());
@@ -985,7 +986,10 @@ public class ParseEngine extends JavaCCGlobals {
           ostr.println("        jj_scanpos = builder.mark();");
         } else {
           //ostr.println("jj_3" + nested_seq.internal_name + "()) " + genReturn(true));
-          ostr.println(genjj_3Call(nested_seq) + ") " + genReturn(true));
+          ostr.println(genjj_3Call(nested_seq) + ") {");
+          ostr.println("        jj_scanpos.rollbackTo();");
+	  ostr.println("        " + genReturn(true));
+	  ostr.println("      }");
           //ostr.println("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
         }
       }
