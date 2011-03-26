@@ -174,15 +174,8 @@ public class LexGen extends JavaCCGlobals implements JavaCCParserConstants
       ostr.println("    int start = zzStartRead;");
       ostr.print("    while(result != null && (result == ");
       ostr.print(cu_name);
-      ostr.print("Constants.MORE || result == ");
-      ostr.print(cu_name);
-      ostr.println("Constants.SKIP)) {");
+      ostr.println("Constants.MORE)) ");
       ostr.println("      result = internalAdvance();");
-      ostr.print("      if (result == ");
-      ostr.print(cu_name);
-      ostr.println("Constants.SKIP)");
-      ostr.println("        start = zzStartRead;");
-      ostr.println("    }");
       ostr.println("    zzStartRead = start;");
       ostr.println("    return result;");
       ostr.println("  }");
