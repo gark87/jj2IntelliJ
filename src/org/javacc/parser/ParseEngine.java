@@ -571,7 +571,7 @@ public class ParseEngine extends JavaCCGlobals {
           retval += "jj_consume_token(" + (String)label + tail;
         } else {
           if (e_nrw.ordinal == 0) {
-            retval += "assert (builder.eof()" + tail;
+            retval += "//assert (builder.eof()" + tail;
           }else {
             retval += "jj_consume_token(" + e_nrw.ordinal + tail;
           }
