@@ -892,9 +892,13 @@ public class ParseEngine extends JavaCCGlobals {
     }
   }
 
+  private static boolean isJustJJScanToken(Expansion e) {
+    return (e.internal_name.startsWith("jj_scan_token"));
+  }
+
   private static String genjj_3Call(Expansion e)
   {
-    if (e.internal_name.startsWith("jj_scan_token"))
+    if (isJustJJScanToken(e))
       return e.internal_name;
     else
       return "jj_3" + e.internal_name + "()";
@@ -904,7 +908,7 @@ public class ParseEngine extends JavaCCGlobals {
   static void buildPhase3Routine(Phase3Data inf, boolean recursive_call) {
     Expansion e = inf.exp;
     Token t = null;
-    if (e.internal_name.startsWith("jj_scan_token"))
+    if (isJustJJScanToken(e))
       return;
 
     if (!recursive_call) {
@@ -977,7 +981,7 @@ public class ParseEngine extends JavaCCGlobals {
           ostr.println(";");
           ostr.println("      jj_lookingAhead = false;");
         }
-        boolean la1 = (nested_seq.internal_name.startsWith("jj_scan_token"));
+        boolean la1 = isJustJJScanToken(nested_seq);
         needElse[i] = la1;
         if (!la1) {
           ostr.println("        jj_scanpos = builder.mark();");
@@ -1069,10 +1073,15 @@ public class ParseEngine extends JavaCCGlobals {
       ZeroOrOne e_nrw = (ZeroOrOne)e;
       Expansion nested_e = e_nrw.expansion;
       ostr.println("    {");
-      ostr.println("      PsiBuilder.Marker jj_scanpos = builder.mark();");
-      //ostr.println("    if (jj_3" + nested_e.internal_name + "()) jj_scanpos = xsp;");
-      ostr.println("      if (" + genjj_3Call(nested_e) + ") jj_scanpos.rollbackTo();");
-      //ostr.println("    else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
+      boolean la1 = isJustJJScanToken(nested_e);
+      if (la1) {
+        String cond = nested_e.internal_name.replace("jj_scan_token", "builder.getTokenType() == ");
+	ostr.println("      if ("+cond+")");
+	ostr.println("        jj_on_la1();");
+      } else {
+        ostr.println("      PsiBuilder.Marker jj_scanpos = builder.mark();");
+        ostr.println("      if (" + genjj_3Call(nested_e) + ") jj_scanpos.rollbackTo();");
+      }
       ostr.println("    }");
     }
     if (!recursive_call) {
