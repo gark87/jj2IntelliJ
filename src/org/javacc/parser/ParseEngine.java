@@ -617,9 +617,10 @@ public class ParseEngine extends JavaCCGlobals {
       Choice e_nrw = (Choice)e;
       conds = new Lookahead[e_nrw.getChoices().size()];
       actions = new String[e_nrw.getChoices().size() + 1];
-      actions[e_nrw.getChoices().size()] = "\n" + 
-        "builder.error(\"Unexpected type \" + builder.getTokenType());\n" + 
-        "builder.advanceLexer();\n" + 
+      actions[e_nrw.getChoices().size()] = "\n" +
+        "builder.error(\"Unexpected type \" + builder.getTokenType());\n" +
+        "builder.advanceLexer();\n" +
+        "if (!builder.eof())\n" +
         "continue;";
       // In previous line, the "throw" never throws an exception since the
       // evaluation of jj_consume_token(-1) causes ParseException to be
@@ -821,7 +822,7 @@ public class ParseEngine extends JavaCCGlobals {
       {
         int ordinal = (((RegularExpression)seq).ordinal);
         Object label = names_of_tokens.get(new Integer(ordinal));
-        if (label == null) 
+        if (label == null)
           e.internal_name = "jj_scan_token(" + ordinal + ") ";
         else
           e.internal_name = "jj_scan_token(" + label + ") ";
