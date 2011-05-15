@@ -1,0 +1,57 @@
+# ignore web and examples
+www
+examples
+
+# backup files
+*~
+
+# ctags files 4 vim
+tags
+
+# where build results are
+bin
+classes
+
+# all generated files(JavaCC uses JavaCC)
+JavaCharStream.java
+ParseException.java
+TokenMgrError.java
+src/org/javacc/jjtree/ASTBNFAssignment.java
+src/org/javacc/jjtree/ASTBNFChoice.java
+src/org/javacc/jjtree/ASTBNFLookahead.java
+src/org/javacc/jjtree/ASTBNFNonTerminal.java
+src/org/javacc/jjtree/ASTBNFOneOrMore.java
+src/org/javacc/jjtree/ASTBNFParenthesized.java
+src/org/javacc/jjtree/ASTBNFSequence.java
+src/org/javacc/jjtree/ASTBNFTryBlock.java
+src/org/javacc/jjtree/ASTBNFZeroOrMore.java
+src/org/javacc/jjtree/ASTBNFZeroOrOne.java
+src/org/javacc/jjtree/ASTCharDescriptor.java
+src/org/javacc/jjtree/ASTPrimaryExpression.java
+src/org/javacc/jjtree/ASTProductions.java
+src/org/javacc/jjtree/ASTRE.java
+src/org/javacc/jjtree/ASTRECharList.java
+src/org/javacc/jjtree/ASTREChoice.java
+src/org/javacc/jjtree/ASTREEOF.java
+src/org/javacc/jjtree/ASTRENamed.java
+src/org/javacc/jjtree/ASTREOneOrMore.java
+src/org/javacc/jjtree/ASTREParenthesized.java
+src/org/javacc/jjtree/ASTREReference.java
+src/org/javacc/jjtree/ASTRESequence.java
+src/org/javacc/jjtree/ASTRESpec.java
+src/org/javacc/jjtree/ASTREStringLiteral.java
+src/org/javacc/jjtree/ASTREZeroOrMore.java
+src/org/javacc/jjtree/ASTREZeroOrOne.java
+src/org/javacc/jjtree/ASTRRepetitionRange.java
+src/org/javacc/jjtree/ASTTokenDecls.java
+src/org/javacc/jjtree/JJTJJTreeParserState.java
+src/org/javacc/jjtree/JJTree.jj
+src/org/javacc/jjtree/JJTreeParser.java
+src/org/javacc/jjtree/JJTreeParserConstants.java
+src/org/javacc/jjtree/JJTreeParserTokenManager.java
+src/org/javacc/jjtree/JJTreeParserTreeConstants.java
+src/org/javacc/jjtree/Node.java
+src/org/javacc/jjtree/SimpleNode.java
+src/org/javacc/parser/JavaCCParser.java
+src/org/javacc/parser/JavaCCParserConstants.java
+src/org/javacc/parser/JavaCCParserTokenManager.java
