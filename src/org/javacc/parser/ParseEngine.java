@@ -982,15 +982,16 @@ public class ParseEngine extends JavaCCGlobals {
           ostr.println("      jj_lookingAhead = false;");
         }
         boolean la1 = isJustJJScanToken(nested_seq);
+	boolean notLast = i != e_nrw.getChoices().size() - 1;
         needElse[i] = la1;
-        if (!la1) {
+        if (!la1 && notLast) {
           ostr.println("        jj_scanpos = builder.mark();");
         }
         ostr.print("      if (");
         if (la.getActionTokens().size() != 0) {
           ostr.print("!jj_semLA || ");
         }
-        if (i != e_nrw.getChoices().size() - 1) {
+        if (notLast) {
           //ostr.println("jj_3" + nested_seq.internal_name + "()) {");
           String condition = genjj_3Call(nested_seq);
           if (la1) {
