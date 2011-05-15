@@ -342,12 +342,12 @@ public class ParseEngine extends JavaCCGlobals {
                 tokenMask[j1] |= 1 << j2;
                 String s = (String)(names_of_tokens.get(new Integer(i)));
                 if (s == null) {
-		  RStringLiteral re = (RStringLiteral)
-		        rexps_of_tokens.get(new Integer(i));
-		  System.err.println("ERROR: jj2IntelliJ do NOT support unnamed " +
-		       "token types(literal constants)");
-		  System.err.println("ERROR: So, create named token with such " +
-		       "image:`" + re.image + "'");
+                  RStringLiteral re = (RStringLiteral)
+                        rexps_of_tokens.get(new Integer(i));
+                  System.err.println("ERROR: jj2IntelliJ do NOT support unnamed " +
+                       "token types(literal constants)");
+                  System.err.println("ERROR: So, create named token with such " +
+                       "image:`" + re.image + "'");
                   retval += i;
                 } else {
                   retval += s;
@@ -957,8 +957,9 @@ public class ParseEngine extends JavaCCGlobals {
         if (!xsp_declared) {
           xsp_declared = true;
         }
-        ostr.println("      PsiBuilder.Marker jj_scanpos = builder.mark();");
+        ostr.println("      PsiBuilder.Marker jj_scanpos;");
       }
+      boolean[] needElse = new boolean[e_nrw.getChoices().size()];
       for (int i = 0; i < e_nrw.getChoices().size(); i++) {
         nested_seq = (Sequence)(e_nrw.getChoices().get(i));
         Lookahead la = (Lookahead)(nested_seq.units.get(0));
@@ -976,27 +977,44 @@ public class ParseEngine extends JavaCCGlobals {
           ostr.println(";");
           ostr.println("      jj_lookingAhead = false;");
         }
+        boolean la1 = (nested_seq.internal_name.startsWith("jj_scan_token"));
+        needElse[i] = la1;
+        if (!la1) {
+          ostr.println("        jj_scanpos = builder.mark();");
+        }
         ostr.print("      if (");
         if (la.getActionTokens().size() != 0) {
           ostr.print("!jj_semLA || ");
         }
         if (i != e_nrw.getChoices().size() - 1) {
           //ostr.println("jj_3" + nested_seq.internal_name + "()) {");
-          ostr.println(genjj_3Call(nested_seq) + ") {");
-          ostr.println("        jj_scanpos.rollbackTo();");
-          ostr.println("        jj_scanpos = builder.mark();");
+          String condition = genjj_3Call(nested_seq);
+          if (la1) {
+            condition = condition.replace("jj_scan_token", "builder.getTokenType() != ");
+          }
+          ostr.println(condition + ") {");
+          if (!la1) {
+            ostr.println("        jj_scanpos.rollbackTo();");
+          }
         } else {
           //ostr.println("jj_3" + nested_seq.internal_name + "()) " + genReturn(true));
-          ostr.println(genjj_3Call(nested_seq) + ") {");
-          ostr.println("        jj_scanpos.rollbackTo();");
-	  ostr.println("        " + genReturn(true));
-	  ostr.println("      }");
+          String condition = genjj_3Call(nested_seq);
+          if (la1) {
+            condition = condition.replace("jj_scan_token", "builder.getTokenType() != "); 
+          }
+          ostr.println(condition + ") {" + genReturn(true));
           //ostr.println("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
         }
       }
-      for (int i = 1; i < e_nrw.getChoices().size(); i++) {
+
+      int size = e_nrw.getChoices().size();
+      for (int i = 0; i < size; i++) {
         //ostr.println("    } else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
-        ostr.println("      }");
+        ostr.print("      }");
+        if (needElse[size - i - 1]) {
+          ostr.print(" else { jj_on_la1(); }");
+        }
+        ostr.println("");
       }
       ostr.println("    }");
     } else if (e instanceof Sequence) {
