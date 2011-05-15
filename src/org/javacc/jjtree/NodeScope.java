@@ -130,10 +130,10 @@ public class NodeScope
   void insertCloseNodeCode(IO io, String indent, boolean isFinal)
   {
       io.println(indent + "{");
-      io.println(indent + "  if (" + closedVar + ") {");
-      io.println(indent + "    " + closedVar + " = false;");
+//      io.println(indent + "  if (" + closedVar + ") {");
+//      io.println(indent + "    " + closedVar + " = false;");
       io.println(indent + "    " + node_descriptor.closeNode(nodeVar));
-      io.println(indent + "  }");
+//      io.println(indent + "  }");
       io.println(indent + "}");
   }
 
