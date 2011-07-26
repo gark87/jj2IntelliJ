@@ -136,6 +136,9 @@ public class Options {
     optionValues.put("TOKEN_EXTENDS", "");
     optionValues.put("TOKEN_FACTORY", "");
     optionValues.put("GRAMMAR_ENCODING", "");
+
+    // gark87: jj2IntelliJ-specific options
+    optionValues.put("AUTOMATIC_ERROR_RECOVERY", Boolean.FALSE);
   }
 
   /**
@@ -649,6 +652,10 @@ public class Options {
    */
   public static File getOutputDirectory() {
     return new File(stringValue("OUTPUT_DIRECTORY"));
+  }
+
+  public static boolean getAutomaticErrorRecovery() {
+    return booleanValue("AUTOMATIC_ERROR_RECOVERY");
   }
 
   public static String stringBufOrBuild() {

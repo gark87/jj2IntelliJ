@@ -181,13 +181,55 @@ public class JavaFiles extends JavaCCGlobals implements JavaCCParserConstants
       options.put("CASE_SENSITIVE", Options.getIgnoreCase() ? "false" : "true");
       JavaFileGenerator generator = new JavaFileGenerator("/templates/" + 
                                       className + ".template", options);
-      
+
       generator.generate(ostr);
 
       ostr.close();
     } catch (IOException e) {
       System.err.println("Failed to create " + fullName + ":" + e);
       JavaCCErrors.semantic_error("Could not open file " + fullName + ".java for writing.");
+      throw new Error();
+    }
+  }
+
+  public static void gen_ParseException() {
+    try {
+      final File file = new File(Options.getOutputDirectory(), "ParseException.java");
+      final OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {"KEEP_LINE_COL"});
+
+      if (!outputFile.needToWrite)
+      {
+        return;
+      }
+
+      final PrintWriter ostr = outputFile.getPrintWriter();
+
+      if (cu_to_insertion_point_1.size() != 0 &&
+          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+      ) {
+        for (int i = 1; i < cu_to_insertion_point_1.size(); i++) {
+          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+            for (int j = 0; j <= i; j++) {
+              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+            }
+            ostr.println("");
+            ostr.println("");
+            break;
+          }
+        }
+      }
+
+      JavaFileGenerator generator = new JavaFileGenerator(
+          "/templates/ParseException.template", Options.getOptions());
+
+      generator.generate(ostr);
+
+      ostr.close();
+    } catch (IOException e) {
+      System.err.println("Failed to create ParseException " + e);
+      JavaCCErrors.semantic_error("Could not open file ParseException.java for writing.");
       throw new Error();
     }
   }

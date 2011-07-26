@@ -501,6 +501,9 @@ public class ParseEngine extends JavaCCGlobals {
       printTrailingComments(t, ostr);
     }
     ostr.print(") ");
+    if (!Options.getAutomaticErrorRecovery()) {
+      ostr.print("throws ParseException ");
+    }
     for (java.util.Iterator it = p.getThrowsList().iterator(); it.hasNext();) {
       ostr.print(", ");
       java.util.List name = (java.util.List)it.next();
@@ -617,11 +620,17 @@ public class ParseEngine extends JavaCCGlobals {
       Choice e_nrw = (Choice)e;
       conds = new Lookahead[e_nrw.getChoices().size()];
       actions = new String[e_nrw.getChoices().size() + 1];
-      actions[e_nrw.getChoices().size()] = "\n" +
-        "builder.error(\"Unexpected type \" + builder.getTokenType());\n" +
-        "builder.advanceLexer();\n" +
-        "if (!builder.eof())\n" +
-        "continue;";
+      if (Options.getAutomaticErrorRecovery()) {
+	actions[e_nrw.getChoices().size()] = "\n" +
+	  "builder.error(\"Unexpected type \" + builder.getTokenType());\n" +
+	  "builder.advanceLexer();\n" +
+	  "if (!builder.eof())\n" +
+	  "continue;";
+      } else {
+	actions[e_nrw.getChoices().size()] = "\n" +
+	  "builder.advanceLexer();\n" +
+          "throw new ParseException();";
+      }
       // In previous line, the "throw" never throws an exception since the
       // evaluation of jj_consume_token(-1) causes ParseException to be
       // thrown first.

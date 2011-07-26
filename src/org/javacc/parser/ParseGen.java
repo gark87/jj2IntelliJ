@@ -138,10 +138,13 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
       ostr.println("  }");
       ostr.println("  " + staticOpt() + "private IElementType jj_consume_token(IElementType type) {");
       ostr.println("    IElementType actualType = builder.getTokenType();");
-      ostr.println("    if (actualType == type)");
+      ostr.println("    if (actualType == type) {");
       ostr.println("      builder.advanceLexer();");
-      ostr.println("    else");
+      ostr.println("    } else {");
       ostr.println("      builder.error(\"Expected \" + type + \", but get: \" + actualType);");
+      if (!Options.getAutomaticErrorRecovery())
+	ostr.println("      throw new ParseException();");
+      ostr.println("    }");
       ostr.println("    return type;");
 
       ostr.println("  }");

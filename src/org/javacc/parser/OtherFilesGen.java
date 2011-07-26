@@ -67,6 +67,9 @@ public class OtherFilesGen extends JavaCCGlobals implements JavaCCParserConstant
     if (JavaCCErrors.get_error_count() != 0) throw new MetaParseException();
 
     String packageName = printHeader();
+    if (!Options.getAutomaticErrorRecovery()) {
+      JavaFiles.gen_ParseException();
+    }
     JavaFiles.gen_JavaFile("ElementType", cu_name, packageName);
     JavaFiles.gen_JavaFile("ElementTypes", cu_name, packageName);
     JavaFiles.gen_JavaFile("Language", cu_name, packageName);
