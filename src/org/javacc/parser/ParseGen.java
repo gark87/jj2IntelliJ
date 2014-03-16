@@ -141,7 +141,10 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
       ostr.println("    if (actualType == type) {");
       ostr.println("      builder.advanceLexer();");
       ostr.println("    } else {");
-      ostr.println("      builder.error(\"Expected \" + type + \", but get: \" + actualType);");
+      ostr.println("      PsiBuilder.Marker errorMarker = builder.mark();");
+      ostr.println("      String text = builder.getTokenText();");
+      ostr.println("      builder.advanceLexer();");
+      ostr.println("      errorMarker.error(\"Expected \" + type + \", but get: \" + text);");
       if (!Options.getAutomaticErrorRecovery())
 	ostr.println("      throw new ParseException();");
       ostr.println("    }");

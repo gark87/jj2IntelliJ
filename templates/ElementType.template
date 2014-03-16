@@ -11,10 +11,5 @@ public class ${PREFIX}ElementType extends IElementType {
   public ${PREFIX}ElementType(@NonNls String debugName) {
     super(debugName, ${PREFIX}ElementTypes.LANG);
   }
-     
-  @SuppressWarnings({"HardCodedStringLiteral"})
-  public String toString() {
-    return "${PREFIX}:" + super.toString();
-  }   
 }
 

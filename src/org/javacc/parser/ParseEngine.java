@@ -622,10 +622,10 @@ public class ParseEngine extends JavaCCGlobals {
       actions = new String[e_nrw.getChoices().size() + 1];
       if (Options.getAutomaticErrorRecovery()) {
 	actions[e_nrw.getChoices().size()] = "\n" +
-	  "builder.error(\"Unexpected type \" + builder.getTokenType());\n" +
-	  "builder.advanceLexer();\n" +
-	  "if (!builder.eof())\n" +
-	  "continue;";
+          "PsiBuilder.Marker errorMarker = builder.mark();\n" +
+          "String text = builder.getTokenText();\n" + 
+	  "builder.advanceLexer();\n" + 
+	  "errorMarker.error(\"Unexpected token \" + text);\n";
       } else {
 	actions[e_nrw.getChoices().size()] = "\n" +
 	  "builder.advanceLexer();\n" +
@@ -640,9 +640,7 @@ public class ParseEngine extends JavaCCGlobals {
         actions[i] = phase1ExpansionGen(nestedSeq);
         conds[i] = (Lookahead)(nestedSeq.units.get(0));
       }
-      retval = "\ndo {";
       retval += buildLookaheadChecker(conds, actions);
-      retval += "\nbreak;\n} while(true);\n";
     } else if (e instanceof Sequence) {
       Sequence e_nrw = (Sequence)e;
       // We skip the first element in the following iteration since it is the
