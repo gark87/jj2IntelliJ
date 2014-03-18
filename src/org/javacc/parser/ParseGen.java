@@ -118,6 +118,7 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
         ostr.println("  " + staticOpt() + "private ArrayList<IElementType> tokens = new ArrayList<IElementType>();");
         ostr.println("  " + staticOpt() + "private int currentIndex = 0;");
         ostr.println("  " + staticOpt() + "private int maxIndex = 0;");
+        ostr.println("  " + staticOpt() + "private boolean reportEof = false;");
         if (lookaheadNeeded) {
           ostr.println("  /** Whether we are looking ahead. */");
           ostr.println("  " + staticOpt() + "private boolean jj_lookingAhead = false;");
@@ -141,12 +142,21 @@ public class ParseGen extends JavaCCGlobals implements JavaCCParserConstants {
       ostr.println("    if (actualType == type) {");
       ostr.println("      builder.advanceLexer();");
       ostr.println("    } else {");
-      ostr.println("      PsiBuilder.Marker errorMarker = builder.mark();");
-      ostr.println("      String text = builder.getTokenText();");
-      ostr.println("      builder.advanceLexer();");
-      ostr.println("      errorMarker.error(\"Expected \" + type + \", but get: \" + text);");
-      if (!Options.getAutomaticErrorRecovery())
+      if (Options.getAutomaticErrorRecovery()) {
+        ostr.println("      if (builder.eof()) {");
+        ostr.println("        if (!reportEof) {");
+        ostr.println("          reportEof = true;");
+        ostr.println("          builder.error(\"Unexpected end of file\");");
+        ostr.println("        }");
+        ostr.println("      } else {");
+        ostr.println("        PsiBuilder.Marker errorMarker = builder.mark();");
+        ostr.println("        String text = builder.getTokenText();");
+        ostr.println("        builder.advanceLexer();");
+        ostr.println("        errorMarker.error(\"Expected \" + type + \", but get: \" + text);");
+        ostr.println("      }");
+      } else {
 	ostr.println("      throw new ParseException();");
+      }
       ostr.println("    }");
       ostr.println("    return type;");
 

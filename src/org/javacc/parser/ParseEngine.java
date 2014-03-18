@@ -622,10 +622,14 @@ public class ParseEngine extends JavaCCGlobals {
       actions = new String[e_nrw.getChoices().size() + 1];
       if (Options.getAutomaticErrorRecovery()) {
 	actions[e_nrw.getChoices().size()] = "\n" +
-          "PsiBuilder.Marker errorMarker = builder.mark();\n" +
-          "String text = builder.getTokenText();\n" + 
-	  "builder.advanceLexer();\n" + 
-	  "errorMarker.error(\"Unexpected token \" + text);\n";
+          "if (!builder.eof()) {\n" +
+          "  PsiBuilder.Marker errorMarker = builder.mark();\n" +
+          "  String text = builder.getTokenText();\n" + 
+	  "  builder.advanceLexer();\n" + 
+	  "  errorMarker.error(\"Unexpected token \" + text);\n" +
+          "} else {\n" +
+	  "  builder.error(\"Unexpected end of file\");\n" +
+          "}\n";
       } else {
 	actions[e_nrw.getChoices().size()] = "\n" +
 	  "builder.advanceLexer();\n" +
